@@ -30,6 +30,11 @@ def home():
     trend.update_layout(xaxis_title='Year-Month', yaxis_title='Number of Deaths by Police', xaxis_tickangle=-45)
     trend.update_traces(line=dict(width=3))
     trend.update_xaxes(type='category')  # Add this line to show labels for all months
+    
+    # Calculate the total average deaths per month
+    total_average = deaths_per_month['count'].mean()
+    trend.add_hline(y=total_average, line_dash='dash', line_color='red', annotation_text=f'Total Average: {total_average:.2f}', annotation_position='top right')
+    
     trend_html = trend.to_html(full_html=False)
 
     # Plotting number of deaths for first 10 states with px.bar
