@@ -17,6 +17,21 @@ def home():
     shape_deaths = data_deaths.shape
     head_deaths = data_deaths.head().to_html(classes='dataframe', index=False)
 
+    # Plotting the number of missions per year
+    data_deaths['date'] = pd.to_datetime(data_deaths['date'], format='%d/%m/%y', errors='coerce')
+    data_deaths['year'] = data_deaths['date'].dt.year
+    data_deaths['month'] = data_deaths['date'].dt.month
+    # Count the number of deaths per month
+    deaths_per_month = data_deaths.groupby(['year', 'month']).size().reset_index(name='count')
+    # Create a 'year_month' column for the x-axis
+    deaths_per_month['year_month'] = deaths_per_month['year'].astype(str) + '-' + deaths_per_month['month'].astype(str)
+    # Create the line chart for deaths per month
+    trend = px.line(deaths_per_month, x='year_month', y='count')
+    trend.update_layout(xaxis_title='Year-Month', yaxis_title='Number of Deaths by Police', xaxis_tickangle=-45)
+    trend.update_traces(line=dict(width=3))
+    trend.update_xaxes(type='category')  # Add this line to show labels for all months
+    trend_html = trend.to_html(full_html=False)
+
     # Plotting number of deaths for first 10 states with px.bar
     data_deaths = data_deaths['state'].value_counts().sort_values(ascending=False)
     deaths_by_state = px.bar(data_deaths, x=data_deaths.index, y=data_deaths.values)
@@ -31,6 +46,7 @@ def home():
     return render_template('index.html', 
                            shape_deaths=shape_deaths, 
                            head_deaths=head_deaths,
+                           trend_deaths=trend_html,
                            deaths_by_state=deaths_by_state_html,
                            )
 
