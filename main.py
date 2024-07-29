@@ -34,7 +34,6 @@ def home():
     # Calculate the total average deaths per month
     total_average = deaths_per_month['count'].mean()
     trend.add_hline(y=total_average, line_dash='dash', line_color='red', annotation_text=f'Total Average: {total_average:.2f}', annotation_position='top right')
-    
     trend_html = trend.to_html(full_html=False)
 
     # Plotting number of deaths for first 10 states with px.bar
@@ -46,13 +45,35 @@ def home():
         # yaxis=dict(type='log')
     )
     deaths_by_state_html = deaths_by_state.to_html(full_html=False)
-    
+
+    # Plotting percentage of deaths
+    data_deaths = pd.read_csv('./static/data/Deaths_by_Police_US.csv', index_col=0, encoding='ISO-8859-1')
+    # By gender
+    gender_death = data_deaths['gender'].value_counts()
+    gender_death = gender_death.reindex(['M', 'F'])
+    gender_death = px.pie(gender_death, values=gender_death.values, names=gender_death.index, hole=0.8, title='By Gender', )
+    gender_death.update_traces(textposition='outside', textinfo='percent+label')
+    gender_death.update_layout(showlegend=False)
+    gender_deaths_html = gender_death.to_html(full_html=False)
+    # By manner
+    manner_death = data_deaths['manner_of_death'].value_counts()
+    manner_death_fig = px.pie(
+        names=manner_death.index, 
+        values=manner_death.values, 
+        title='By Manner of Death', 
+        hole=0.8
+    )
+    manner_death_fig.update_traces(textposition='outside', textinfo='percent+label')
+    manner_death_fig.update_layout(showlegend=False)
+    manner_death_html = manner_death_fig.to_html(full_html=False)    
 
     return render_template('index.html', 
                            shape_deaths=shape_deaths, 
                            head_deaths=head_deaths,
                            trend_deaths=trend_html,
                            deaths_by_state=deaths_by_state_html,
+                           gender_deaths=gender_deaths_html,
+                           manner_death=manner_death_html
                            )
 
 
