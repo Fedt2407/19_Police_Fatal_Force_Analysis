@@ -65,7 +65,18 @@ def home():
     )
     manner_death_fig.update_traces(textposition='outside', textinfo='percent+label')
     manner_death_fig.update_layout(showlegend=False)
-    manner_death_html = manner_death_fig.to_html(full_html=False)    
+    manner_death_html = manner_death_fig.to_html(full_html=False)
+    # By sings of mental illness
+    mental_illness = data_deaths['signs_of_mental_illness'].value_counts()
+    mental_illness_fig = px.pie(
+        names=mental_illness.index, 
+        values=mental_illness.values, 
+        title='Signs of Mental Illness', 
+        hole=0.8
+    )
+    mental_illness_fig.update_traces(textposition='outside', textinfo='percent+label')
+    mental_illness_fig.update_layout(showlegend=False)
+    manner_illness_html = mental_illness_fig.to_html(full_html=False)
 
     return render_template('index.html', 
                            shape_deaths=shape_deaths, 
@@ -73,7 +84,8 @@ def home():
                            trend_deaths=trend_html,
                            deaths_by_state=deaths_by_state_html,
                            gender_deaths=gender_deaths_html,
-                           manner_death=manner_death_html
+                           manner_death=manner_death_html,
+                           mental_illness=manner_illness_html
                            )
 
 

@@ -125,7 +125,7 @@ footer p {
   transition: background-color 0.2s ease;
 }
 
-.two-columns {
-  width: 45%;
+.three-columns {
+  width: 33%;
   display: inline-block;
 }

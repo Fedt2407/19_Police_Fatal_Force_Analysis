@@ -41,15 +41,24 @@
 
     <section id="charts">
       <h2>Deaths by state</h2>
-      <p>California leades for number od deaths...</p>
+      <p>
+        The state of California leads the ranking of deaths, more than doubling
+        Texas.
+      </p>
       <div id="chart1">{{ deaths_by_state | safe }}</div>
     </section>
 
     <section id="charts">
-      <h2>Deaths by Gender</h2>
-      <p>California leades for number od deaths...</p>
-      <div class="two-columns">{{ gender_deaths | safe }}</div>
-      <div class="two-columns">{{ manner_death | safe }}</div>
+      <h2>Gender, Manner and Mental Illness</h2>
+      <p></p>
+      <p>
+        Almost 96% of deaths involves men while only 4% involves women. In
+        almost 7% of cases victims have been both shot and teasered. Only in 25%
+        of cases victims showed signs of mental illness.
+      </p>
+      <div class="three-columns">{{ gender_deaths | safe }}</div>
+      <div class="three-columns">{{ manner_death | safe }}</div>
+      <div class="three-columns">{{ mental_illness | safe }}</div>
     </section>
 
     <footer>
