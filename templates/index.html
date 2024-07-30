@@ -32,9 +32,10 @@
     <section id="charts">
       <h2>Deaths by Police Trend over years</h2>
       <p>
-        Number of deaths by police has spiked in July 2015 and February 2017,
-        while the lowest levels were registerd in June 205 and April 2017.
-        Global average is 82 deaths per month.
+        From January 2025 to July 2017 2535 victims due to police use of force
+        are reported. Number of deaths by police has spiked in July 2015 and
+        February 2017, while the lowest levels were registerd in June 205 and
+        April 2017. Global average is 82 deaths per month.
       </p>
       <div id="chart1">{{ trend_deaths | safe }}</div>
     </section>
@@ -59,6 +60,21 @@
       <div class="three-columns">{{ gender_deaths | safe }}</div>
       <div class="three-columns">{{ manner_death | safe }}</div>
       <div class="three-columns">{{ mental_illness | safe }}</div>
+    </section>
+
+    <section id="charts">
+      <h2>Victims Armed Status</h2>
+      <p>
+        In almost 50% of cases victims were armed with guns. To be noticed tha
+        in more tha 10% of cases weapon was unknown or victims were unarmed.
+      </p>
+      <div id="chart1">{{ armed_status | safe }}</div>
+    </section>
+
+    <section id="charts">
+      <h2>Victims in the First 10 cities</h2>
+      <p>...</p>
+      <div id="chart1">{{ city_death | safe }}</div>
     </section>
 
     <footer>

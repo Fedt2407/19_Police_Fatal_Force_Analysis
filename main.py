@@ -17,7 +17,7 @@ def home():
     shape_deaths = data_deaths.shape
     head_deaths = data_deaths.head().to_html(classes='dataframe', index=False)
 
-    # Plotting the number of missions per year
+    # Plotting the number of deaths per year
     data_deaths['date'] = pd.to_datetime(data_deaths['date'], format='%d/%m/%y', errors='coerce')
     data_deaths['year'] = data_deaths['date'].dt.year
     data_deaths['month'] = data_deaths['date'].dt.month
@@ -36,7 +36,7 @@ def home():
     trend.add_hline(y=total_average, line_dash='dash', line_color='red', annotation_text=f'Total Average: {total_average:.2f}', annotation_position='top right')
     trend_html = trend.to_html(full_html=False)
 
-    # Plotting number of deaths for first 10 states with px.bar
+    # Plotting number of deaths by state with px.bar
     data_deaths = data_deaths['state'].value_counts().sort_values(ascending=False)
     deaths_by_state = px.bar(data_deaths, x=data_deaths.index, y=data_deaths.values)
     deaths_by_state.update_layout(
@@ -78,6 +78,31 @@ def home():
     mental_illness_fig.update_layout(showlegend=False)
     manner_illness_html = mental_illness_fig.to_html(full_html=False)
 
+    # Plotting Armed Status
+    data_deaths = data_deaths['armed'].value_counts().sort_values(ascending=False)[:15]
+    data_deaths = data_deaths[::-1]  # Reverse the order of the data
+    armed_status = px.bar(data_deaths, y=data_deaths.index, x=data_deaths.values, orientation='h')
+    armed_status.update_layout(
+        yaxis_title='Type of Weapon',
+        xaxis_title='Number of Deaths by Police (Log scale)',
+        xaxis=dict(type='log')
+    )
+    armed_status.update_layout(height=800)  # Increase the height of the chart area to 800 pixels
+    armed_status.update_traces(texttemplate='%{x}', textposition='outside')
+    armed_status_html = armed_status.to_html(full_html=False)
+
+    # Plotting deaths by city
+    data_deaths = pd.read_csv('./static/data/Deaths_by_Police_US.csv', index_col=0, encoding='ISO-8859-1')
+    data_deaths = data_deaths['city'].value_counts().sort_values(ascending=False)[:10]
+    city_death = px.bar(data_deaths, x=data_deaths.index, y=data_deaths.values)
+    city_death.update_layout(
+        xaxis_title='City',
+        yaxis_title='Number of Deaths by Police',
+        # yaxis=dict(type='log')
+    )
+    city_death.update_traces(texttemplate='%{y}', textfont=dict(size=14), textposition='inside', insidetextanchor='middle')
+    city_death_html = city_death.to_html(full_html=False)
+
     return render_template('index.html', 
                            shape_deaths=shape_deaths, 
                            head_deaths=head_deaths,
@@ -85,7 +110,9 @@ def home():
                            deaths_by_state=deaths_by_state_html,
                            gender_deaths=gender_deaths_html,
                            manner_death=manner_death_html,
-                           mental_illness=manner_illness_html
+                           mental_illness=manner_illness_html,
+                           armed_status=armed_status_html,
+                           city_death=city_death_html
                            )
 
 
