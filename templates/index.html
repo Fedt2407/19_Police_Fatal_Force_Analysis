@@ -73,8 +73,20 @@
 
     <section id="charts">
       <h2>Victims in the First 10 cities</h2>
-      <p>...</p>
+      <p>
+        The highest number of victims are in Los Angeles, Phoenix and Huston,
+        those are cities close to border with Mexico interested by immigration
+        and drug import problems.
+      </p>
       <div id="chart1">{{ city_death | safe }}</div>
+    </section>
+
+    <section id="charts">
+      <h2>Race By City Data structure</h2>
+      <p>
+        Database has {{ shape_race[0] }} rows and {{ shape_race[1] }} columns.
+      </p>
+      <div id="chart1">{{ head_race | safe }}</div>
     </section>
 
     <footer>

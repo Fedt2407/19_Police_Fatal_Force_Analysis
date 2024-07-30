@@ -103,6 +103,15 @@ def home():
     city_death.update_traces(texttemplate='%{y}', textfont=dict(size=14), textposition='inside', insidetextanchor='middle')
     city_death_html = city_death.to_html(full_html=False)
 
+    # Race by city
+    race_by_city = pd.read_csv('./static/data/Share_of_Race_By_City.csv', index_col=0, encoding='ISO-8859-1')
+    shape_race_by_city = race_by_city.shape
+    # Filter the race data for specific cities
+    cities = ['Los Angeles city', 'Phoenix city', 'Huston city', 'Chicago city', 'Las Vegas city', 'San Antonio city', 'Columbus city']
+    filtered_race_by_city = race_by_city[race_by_city['City'].isin(cities)]
+    filtered_race_by_city_html = filtered_race_by_city.to_html(classes='dataframe', index=False)
+    # filtered_race_by_city_html = race_by_city.head().to_html(classes='dataframe', index=False)
+
     return render_template('index.html', 
                            shape_deaths=shape_deaths, 
                            head_deaths=head_deaths,
@@ -112,7 +121,9 @@ def home():
                            manner_death=manner_death_html,
                            mental_illness=manner_illness_html,
                            armed_status=armed_status_html,
-                           city_death=city_death_html
+                           city_death=city_death_html,
+                           shape_race=shape_race_by_city,
+                           head_race=filtered_race_by_city_html
                            )
 
 
